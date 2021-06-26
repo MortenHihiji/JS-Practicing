@@ -1,57 +1,81 @@
 import React from 'react';
-// import axios from 'axios';
+import axios from 'axios';
+import { Route } from 'react-router-dom';
 
-import Card from './components/Card';
 import Header from './components/Header';
 import Drawer from './components/Drawer';
+import Home from './pages/Home';
+import Favorites from './pages/Favorites';
 
 function App() {
   const [items, setItems] = React.useState([]);
   const [cartItems, setCartItems] = React.useState([]);
+  const [favorites, setFavorites] = React.useState([]);
+  const [searchValue, setSearchValue] = React.useState('');
   const [cartOpened, setCartOpened] = React.useState(false);
 
   React.useEffect(() => {
-    fetch('https://60d381ab61160900173c93d9.mockapi.io/items')
-      .then((res) => {
-        return res.json();
-      })
-      .then((json) => setItems(json));
-    // axios.get('https://60d381ab61160900173c93d9.mockapi.io/items').then(({ data }) => {
-    //   setItems(data);
-    // });
+    axios.get('https://60d381ab61160900173c93d9.mockapi.io/items').then(({ data }) => {
+      setItems(data);
+    });
+    axios.get('https://60d381ab61160900173c93d9.mockapi.io/cart').then(({ data }) => {
+      setCartItems(data);
+    });
+    axios.get('https://60d381ab61160900173c93d9.mockapi.io/favorites').then(({ data }) => {
+      setFavorites(data);
+    });
   }, []);
 
   const onAddToCart = (obj) => {
+    axios.post('https://60d381ab61160900173c93d9.mockapi.io/cart', obj);
     setCartItems((prev) => [...prev, obj]);
   };
 
-  console.log(cartItems);
+  const onRemoveItem = (id) => {
+    axios.delete(`https://60d381ab61160900173c93d9.mockapi.io/cart/${id}`);
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const onAddToFavorite = async (obj) => {
+    try {
+      if (favorites.find((favObj) => favObj.id === obj.id)) {
+        axios.delete(`https://60d381ab61160900173c93d9.mockapi.io/favorites/${obj.id}`);
+      } else {
+        const { data } = await axios.post(
+          'https://60d381ab61160900173c93d9.mockapi.io/favorites',
+          obj,
+        );
+        setFavorites((prev) => [...prev, data]);
+      }
+    } catch (error) {
+      alert('Не удалось добавить в Закладки');
+    }
+  };
+
+  const onChangeSearchInput = (event) => {
+    setSearchValue(event.target.value);
+  };
+
   return (
     <div className="wrapper clear">
-      {cartOpened && <Drawer items={cartItems} onClose={() => setCartOpened(false)} />}
+      {cartOpened && (
+        <Drawer items={cartItems} onClose={() => setCartOpened(false)} onRemove={onRemoveItem} />
+      )}
       <Header onClickCart={() => setCartOpened(true)} />
-      <div className="content p-40">
-        <div className="d-flex justify-between align-center mb-40">
-          <h1>Все кроссовки</h1>
-          <div className="search-block d-flex">
-            <img src="/img/search.svg" alt="search" />
-            <input placeholder="Поиск..." />
-          </div>
-        </div>
+      <Route path="/" exact>
+        <Home
+          items={items}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+          onChangeSearchInput={onChangeSearchInput}
+          onAddToFavorite={onAddToFavorite}
+          onAddToCart={onAddToCart}
+        />
+      </Route>
 
-        <div className="d-flex flex-wrap">
-          {items &&
-            items.map((item) => (
-              <Card
-                key={item.imageUrl}
-                imageUrl={item.imageUrl}
-                title={item.title}
-                price={item.price}
-                onPlus={(obj) => onAddToCart(obj)}
-              />
-            ))}
-        </div>
-      </div>
+      <Route path="/favorites">
+        <Favorites items={favorites} onAddToFavorite={onAddToFavorite} />
+      </Route>
     </div>
   );
 }

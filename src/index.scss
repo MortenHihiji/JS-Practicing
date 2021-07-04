@@ -68,68 +68,34 @@ header {
   }
 }
 
-.overlay {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1;
-}
-
-.drawer {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  width: 420px;
-  height: 100%;
-  right: 0;
-
-  background: #ffffff;
-  box-shadow: -10px 4px 24px rgba(0, 0, 0, 0.1);
-
-  padding: 30px;
-
-  .items {
-    overflow: auto;
-    flex: 1;
-    margin-bottom: 40px;
-  }
-
-  h2 {
-    margin: 0;
-  }
-
-  .cartEmpty {
-    text-align: center;
-
-    p {
-      width: 280px;
-    }
-
-    .greenButton {
-      width: 280px;
-      margin-top: 20px;
-
-      &:hover {
-        img {
-          transform: rotate(180deg) translateX(3px);
-        }
-      }
-
-      img {
-        position: relative;
-        top: 1px;
-        transform: rotate(180deg);
-        margin-right: 15px;
-      }
-    }
-  }
-}
-
 .items {
   flex: 1;
+}
+
+.cartEmpty {
+  text-align: center;
+
+  p {
+    width: 280px;
+  }
+
+  .greenButton {
+    width: 280px;
+    margin-top: 20px;
+
+    &:hover {
+      img {
+        transform: rotate(180deg) translateX(3px);
+      }
+    }
+
+    img {
+      position: relative;
+      top: 1px;
+      transform: rotate(180deg);
+      margin-right: 15px;
+    }
+  }
 }
 
 .cartTotalBlock {

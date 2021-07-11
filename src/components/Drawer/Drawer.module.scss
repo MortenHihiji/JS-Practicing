@@ -38,7 +38,6 @@
   transition: transform 0.3s ease-in-out;
 
   .items {
-    overflow: auto;
     flex: 1;
     margin-bottom: 40px;
   }
@@ -46,4 +45,13 @@
   h2 {
     margin: 0;
   }
+}
+
+.itemsWrapper {
+  overflow: hidden;
+}
+
+.itemsOverflow {
+  overflow-y: scroll;
+  flex: 1;
 }

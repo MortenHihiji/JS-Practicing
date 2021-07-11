@@ -45,8 +45,8 @@ function Drawer({ onClose, onRemove, items = [], opened, drawerRef }) {
         </h2>
 
         {items.length > 0 ? (
-          <div className="d-flex flex-column flex">
-            <div className="items flex">
+          <div className={`${styles.itemsWrapper} d-flex flex-column flex`}>
+            <div className={`${styles.itemsOverflow}`}>
               {items &&
                 items.map((obj) => (
                   <div key={obj.id} className="cartItem d-flex align-center mb-20">

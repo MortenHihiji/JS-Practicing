@@ -10,7 +10,10 @@ function Home({
   onAddToCart,
   cartItems,
   isLoading,
+  favorites,
 }) {
+  const favoritesId = favorites.map((favObj) => favObj.parentId);
+
   const renderItems = () => {
     const filtredItems = items.filter((item) =>
       item.title.toLowerCase().includes(searchValue.toLowerCase()),
@@ -34,7 +37,7 @@ function Home({
             onPlus={(obj) => onAddToCart(obj)}
             onFavorite={onAddToFavorite}
             loading={isLoading}
-            //   favorited={favorites}
+            favorited={favoritesId.some((favObj) => favObj === item.id)}
             {...item}
           />
         );

@@ -72,6 +72,33 @@ header {
   flex: 1;
 }
 
+.emptyItems {
+  text-align: center;
+  margin: 150px 0;
+
+  h2 {
+    margin: 0;
+  }
+
+  .greenButton {
+    width: 280px;
+    margin-top: 65px;
+
+    &:hover {
+      img {
+        transform: rotate(180deg) translateX(3px);
+      }
+    }
+
+    img {
+      position: relative;
+      top: 1px;
+      transform: rotate(180deg);
+      margin-right: 15px;
+    }
+  }
+}
+
 .cartEmpty {
   text-align: center;
 
@@ -197,6 +224,22 @@ header {
 
     &:hover {
       opacity: 1;
+    }
+  }
+}
+
+.headerLinks {
+  a:last-child {
+    margin-right: 0;
+  }
+
+  a {
+    margin-right: 20px;
+
+    li {
+      img {
+        margin-right: 0;
+      }
     }
   }
 }

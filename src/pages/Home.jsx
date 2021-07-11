@@ -15,15 +15,36 @@ function Home({
     const filtredItems = items.filter((item) =>
       item.title.toLowerCase().includes(searchValue.toLowerCase()),
     );
-    return (isLoading ? [...Array(12)] : filtredItems).map((item, index) => (
-      <Card
-        key={index}
-        onPlus={(obj) => onAddToCart(obj)}
-        onFavorite={(obj) => onAddToFavorite(obj)}
-        loading={isLoading}
-        {...item}
-      />
-    ));
+
+    return isLoading ? (
+      [...Array(12)].map((item, index) => (
+        <Card
+          key={index}
+          onPlus={(obj) => onAddToCart(obj)}
+          onFavorite={onAddToFavorite}
+          loading={isLoading}
+          {...item}
+        />
+      ))
+    ) : filtredItems.length > 0 ? (
+      filtredItems.map((item, index) => {
+        return (
+          <Card
+            key={index}
+            onPlus={(obj) => onAddToCart(obj)}
+            onFavorite={onAddToFavorite}
+            loading={isLoading}
+            //   favorited={favorites}
+            {...item}
+          />
+        );
+      })
+    ) : (
+      <div className="emptyItems d-flex align-center justify-center flex-column flex">
+        <h2>Кроссовок с таким названием не найдено!</h2>
+        <p className="opacity-6">Попробуйте снова</p>
+      </div>
+    );
   };
 
   return (

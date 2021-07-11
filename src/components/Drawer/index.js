@@ -8,7 +8,7 @@ import styles from './Drawer.module.scss';
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-function Drawer({ onClose, onRemove, items = [], opened }) {
+function Drawer({ onClose, onRemove, items = [], opened, drawerRef }) {
   const { cartItems, setCartItems, totalPrice } = useCart();
   const [orderId, setOrderId] = React.useState(null);
   const [isOrderComplete, setIsOrderComplete] = React.useState(false);
@@ -38,7 +38,7 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
 
   return (
     <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ''}`}>
-      <div className={styles.drawer}>
+      <div ref={drawerRef} className={styles.drawer}>
         <h2 className="d-flex justify-between mb-30">
           Корзина
           <img onClick={() => onClose()} className="cu-p" src="/img/btn-remove.svg" alt="Close" />

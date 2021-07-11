@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Route } from 'react-router-dom';
+import { Route, useHistory } from 'react-router-dom';
 import AppContext from './context';
 
 import Header from './components/Header';
@@ -17,6 +17,12 @@ function App() {
   const [searchValue, setSearchValue] = React.useState('');
   const [cartOpened, setCartOpened] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [isIcon, setIsIcon] = React.useState();
+
+  const onCartRef = React.useRef();
+  const drawerRef = React.useRef();
+
+  const history = useHistory();
 
   React.useEffect(() => {
     async function fetchData() {
@@ -82,6 +88,7 @@ function App() {
     try {
       if (favorites.find((favObj) => Number(favObj.id) === Number(obj.id))) {
         axios.delete(`https://60d381ab61160900173c93d9.mockapi.io/favorites/${obj.id}`);
+        setFavorites((prev) => prev.filter((item) => item.id !== obj.id));
       } else {
         const { data } = await axios.post(
           'https://60d381ab61160900173c93d9.mockapi.io/favorites',
@@ -103,6 +110,25 @@ function App() {
     return cartItems.some((obj) => Number(obj.parentId) === Number(id));
   };
 
+  const handleOutsideClick = (e) => {
+    if (!e.path.includes(drawerRef.current) && !e.path.includes(onCartRef.current)) {
+      setCartOpened(false);
+    }
+  };
+
+  React.useEffect(() => {
+    document.body.addEventListener('click', handleOutsideClick);
+  }, []);
+
+  React.useEffect(() => {
+    history.listen((location) => {
+      const path = location.pathname;
+      setIsIcon(path);
+    });
+
+    setIsIcon(window.location.pathname);
+  }, [history]);
+
   return (
     <AppContext.Provider
       value={{
@@ -114,6 +140,8 @@ function App() {
         onAddToCart,
         setCartOpened,
         setCartItems,
+        setFavorites,
+        history,
       }}>
       <div className="wrapper clear">
         <Drawer
@@ -121,9 +149,11 @@ function App() {
           onClose={() => setCartOpened(false)}
           onRemove={onRemoveItem}
           opened={cartOpened}
+          onCartRef={onCartRef}
+          drawerRef={drawerRef}
         />
 
-        <Header onClickCart={() => setCartOpened(true)} />
+        <Header onClickCart={() => setCartOpened(true)} onCartRef={onCartRef} isIcon={isIcon} />
         <Route path="/" exact>
           <Home
             items={items}

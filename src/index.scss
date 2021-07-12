@@ -126,6 +126,8 @@ header {
 }
 
 .cartTotalBlock {
+  margin-top: 30px;
+
   ul {
     display: block;
     margin-bottom: 40px !important;
@@ -242,6 +244,10 @@ header {
       }
     }
   }
+}
+
+.orderItem {
+  margin-top: 90px;
 }
 
 @keyframes button-loading {

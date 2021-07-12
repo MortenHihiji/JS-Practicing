@@ -8,17 +8,23 @@ function Home({
   onChangeSearchInput,
   onAddToFavorite,
   onAddToCart,
-  cartItems,
   isLoading,
-  favorites,
+  setIsLoading,
 }) {
-  const favoritesId = favorites.map((favObj) => favObj.parentId);
+  const [filtredItem, setFiltredItem] = React.useState([]);
 
-  const renderItems = () => {
+  React.useEffect(() => {
+    setIsLoading(true);
     const filtredItems = items.filter((item) =>
       item.title.toLowerCase().includes(searchValue.toLowerCase()),
     );
+    setFiltredItem(filtredItems);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 200);
+  }, [items, searchValue, setIsLoading]);
 
+  const renderItems = () => {
     return isLoading ? (
       [...Array(12)].map((item, index) => (
         <Card
@@ -29,19 +35,17 @@ function Home({
           {...item}
         />
       ))
-    ) : filtredItems.length > 0 ? (
-      filtredItems.map((item, index) => {
-        return (
-          <Card
-            key={index}
-            onPlus={(obj) => onAddToCart(obj)}
-            onFavorite={onAddToFavorite}
-            loading={isLoading}
-            favorited={favoritesId.some((favObj) => favObj === item.id)}
-            {...item}
-          />
-        );
-      })
+    ) : filtredItem.length > 0 ? (
+      filtredItem.map((item, index) => (
+        <Card
+          key={index}
+          onPlus={(obj) => onAddToCart(obj)}
+          onFavorite={onAddToFavorite}
+          loading={isLoading}
+          //   favorited={favoritesId.some((favObj) => favObj === item.parentId)}
+          {...item}
+        />
+      ))
     ) : (
       <div className="emptyItems d-flex align-center justify-center flex-column flex">
         <h2>Кроссовок с таким названием не найдено!</h2>

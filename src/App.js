@@ -116,6 +116,11 @@ function App() {
     return cartItems.some((obj) => Number(obj.parentId) === Number(id));
   };
 
+  const isFavoriteAdded = (id) => {
+    const favoritesId = favorites.map((favObj) => favObj.parentId);
+    return favoritesId.some((favObj) => favObj === id);
+  };
+
   const handleOutsideClick = (e) => {
     if (!e.path.includes(drawerRef.current) && !e.path.includes(onCartRef.current)) {
       setCartOpened(false);
@@ -148,6 +153,7 @@ function App() {
         setCartItems,
         setFavorites,
         history,
+        isFavoriteAdded,
       }}>
       <div className="wrapper clear">
         <Drawer
@@ -169,6 +175,7 @@ function App() {
             onAddToFavorite={onAddToFavorite}
             onAddToCart={onAddToCart}
             isLoading={isLoading}
+            setIsLoading={setIsLoading}
             favorites={favorites}
           />
         </Route>

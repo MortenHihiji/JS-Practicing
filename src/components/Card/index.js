@@ -15,8 +15,8 @@ function Card({
   favorited = false,
   loading = false,
 }) {
-  const { isItemAdded } = React.useContext(AppContext);
-  const [isFavorite, setIsFavorite] = React.useState(favorited);
+  const { isItemAdded, isFavoriteAdded } = React.useContext(AppContext);
+  //   const [isFavorite, setIsFavorite] = React.useState(favorited);
   const obj = { id, parentId: id, title, price, imageUrl };
 
   const onClickPlus = () => {
@@ -25,7 +25,7 @@ function Card({
 
   const onClickFavorite = () => {
     onFavorite(obj);
-    setIsFavorite(!isFavorite);
+    // setIsFavorite(!isFavorite);
   };
 
   return (
@@ -49,7 +49,11 @@ function Card({
           {onFavorite && (
             <div className={styles.favorite}>
               <img
-                src={isFavorite ? '/img/heart-liked.svg' : '/img/heart-unliked.svg'}
+                src={
+                  favorited || isFavoriteAdded(id)
+                    ? '/img/heart-liked.svg'
+                    : '/img/heart-unliked.svg'
+                }
                 onClick={onClickFavorite}
                 alt="unliked"
               />

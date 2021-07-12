@@ -26,9 +26,13 @@ function Orders() {
 
   return (
     <div className="content p-40">
-      <div className="d-flex justify-between align-center mb-40">
-        <h1>Мои заказы</h1>
-      </div>
+      {orders.length > 0 ? (
+        <div className="d-flex justify-between align-center mb-40">
+          <h1>Мои заказы</h1>
+        </div>
+      ) : (
+        ''
+      )}
       {isLoading ? (
         <div className="d-flex flex-wrap">
           {[...Array(8)].map((item, index) => (
@@ -37,14 +41,14 @@ function Orders() {
         </div>
       ) : orders.length > 0 ? (
         orders.map((item, index) => (
-          <>
+          <div key={index} className="orderItem">
             <h2>Заказ №{item.id}</h2>
             <div className="d-flex flex-wrap">
-              {item.items.map((item) => (
+              {item.items.map((item, index) => (
                 <Card key={index} loading={isLoading} {...item} />
               ))}
             </div>
-          </>
+          </div>
         ))
       ) : (
         <div className="emptyItems d-flex align-center justify-center flex-column flex">

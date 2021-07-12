@@ -8,9 +8,13 @@ function Favorites() {
 
   return (
     <div className="content p-40">
-      <div className="d-flex justify-between align-center mb-40">
-        <h1>Мои закладки</h1>
-      </div>
+      {favorites.length > 0 ? (
+        <div className="d-flex justify-between align-center mb-40">
+          <h1>Мои закладки</h1>
+        </div>
+      ) : (
+        ''
+      )}
 
       <div className="d-flex flex-wrap">
         {favorites.length > 0 ? (

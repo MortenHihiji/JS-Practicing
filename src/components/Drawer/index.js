@@ -95,6 +95,8 @@ function Drawer({ onClose, onRemove, items = [], opened, drawerRef }) {
                 : 'Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ'
             }
             image={isOrderComplete ? '/img/complete-order.jpg' : '/img/bin.svg'}
+            isOrderComplete={isOrderComplete}
+            setIsOrderComplete={setIsOrderComplete}
           />
         )}
       </div>
